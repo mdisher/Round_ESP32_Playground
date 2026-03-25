@@ -47,8 +47,11 @@ public:
     Serial.printf("  CST816S chip ID: 0x%02X\n", chipId);
   }
 
-  // Read current touch state.
-  // Call frequently in loop(); no interrupt required.
+  // Read current touch state by polling the I2C registers directly.
+  // The INT pin is wired to PIN_TOUCH_INT but not used here; polling is
+  // simpler and reliable enough at the ~50 Hz loop rate.
+  // Call every loop() iteration; returns immediately with touched=false
+  // when no finger is detected (FingerNum register == 0).
   TouchData read() {
     TouchData d = { false, GEST_NONE, 0, 0 };
 

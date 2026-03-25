@@ -41,7 +41,10 @@ static void diagRow(TFT_eSprite& spr, int y,
   spr.drawString(val, 122, y, 2);
 }
 
-// Thin horizontal line clipped to the circle at the given y
+// Thin horizontal divider line clipped to the round display boundary.
+// Calculates the chord half-width at the given y using the circle equation
+// (hw = sqrt(119^2 - (y-120)^2)), subtracts an 8px safety margin so the
+// line doesn't bleed into the anti-aliased bezel, then draws a grey hLine.
 static void diagDivider(TFT_eSprite& spr, int y) {
   // half-chord at this y: sqrt(119^2 - (y-120)^2) with margin
   int dy = abs(y-120);

@@ -79,6 +79,11 @@ static void applyTerminator(TFT_eSprite& spr, int CX, int CY, int R,
   const float EARTHSHINE = 0.07f;   // shadow brightness (earthshine glow)
   const float PENUMBRA   = 12.f;    // soft-edge half-width in pixels
 
+  // cos_p = the x-coordinate of the terminator line, normalised to [-1, +1].
+  // For waxing (phase 0→0.5): cos(2π·phase) goes from 1 (right edge, new moon)
+  // to -1 (left edge, full moon) — terminator sweeps left-to-right.
+  // For waning (phase 0.5→1): negate so terminator sweeps right-to-left.
+  // Multiply by R to get the pixel x-offset from centre.
   float cos_p  = (phase <= 0.5f) ?  cosf(2.f*PI*phase)
                                   : -cosf(2.f*PI*phase);
   float x_term = cos_p * R;
@@ -118,9 +123,14 @@ static void applyTerminator(TFT_eSprite& spr, int CX, int CY, int R,
 // ─────────────────────────────────────────────────────────────────────────────
 //  Transparent outlined text — floats over the moon without background boxes
 //
-//  TFT_eSPI skips the background fill when textcolor == textbgcolor, giving
-//  true per-pixel transparency.  We draw a 1px dark outline first (8 dirs),
-//  then the foreground on top — readable against any lighting condition.
+//  TFT_eSPI only fills the character-cell background when textcolor != textbgcolor.
+//  Setting both to the same value activates per-pixel transparency: only the glyph
+//  pixels are drawn, the background is left untouched — exactly like alpha blending.
+//
+//  Technique: draw the string 8× at ±1px offsets in a dark colour (outline), then
+//  once more at the true position in the foreground colour.  Both passes use the
+//  same-color trick, so neither draws a background rectangle.  The result is a
+//  cleanly outlined glyph that reads well against any light or dark background.
 // ─────────────────────────────────────────────────────────────────────────────
 static void drawMoonText(TFT_eSprite& spr, const char* str,
                           int x, int y, uint8_t font,

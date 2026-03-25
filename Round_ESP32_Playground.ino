@@ -8,9 +8,11 @@
  * ║    IMU      : QMI8658 (I2C)     Flash : 16 MB   PSRAM: 2 MB OPI          ║
  * ╠══════════════════════════════════════════════════════════════════════════╣
  * ║  Pages  (swipe left / right to navigate)                                 ║
- * ║    0 – Diver clock face (dark)                                           ║
- * ║    1 – Dress clock face (light)                                          ║
- * ║    2 – Diagnostics                                                       ║
+ * ║    0 – Phantom Diver  (dark navy dial, lume markers)                     ║
+ * ║    1 – Ocean          (deep blue gradient, gold accents)                 ║
+ * ║    2 – Moon Analog    (real moon photo + terminator shading)             ║
+ * ║    3 – Moon Digital   (same background, 12-hr HH:MM:SS)                 ║
+ * ║    4 – Diagnostics    (WiFi, heap, PSRAM, battery, uptime)               ║
  * ╠══════════════════════════════════════════════════════════════════════════╣
  * ║  Required libraries (Arduino Library Manager)                            ║
  * ║    • TFT_eSPI  by Bodmer                                                 ║
@@ -225,7 +227,7 @@ void loop() {
     }
   }
 
-  // ── NTP daily refresh ─────────────────────────────────────────────────────
+  // ── NTP daily refresh (86400000 ms = 24 h) ─────────────────────────────
   static uint32_t lastNtpMs = 0;
   if (WiFi.status() == WL_CONNECTED && millis() - lastNtpMs >= 86400000UL) {
     lastNtpMs = millis();

@@ -21,7 +21,7 @@ static const uint16_t COL_DRED     = C565(208, 18, 18);
 static const uint16_t COL_ORANGE   = C565(238, 76,  0);
 static const uint16_t FACE1_BG     = C565(  5,  7, 18);   // near-black navy
 
-// ── Page-dot indicator ────────────────────────────────────────────────────────
+// ── Page-dot indicator (defined but not currently used) ───────────────────────
 inline void drawPageDots(TFT_eSprite& spr, uint8_t cur, uint8_t total,
                           uint16_t bgColor) {
   const int SP=14, Y=218, R=4;
@@ -34,6 +34,13 @@ inline void drawPageDots(TFT_eSprite& spr, uint8_t cur, uint8_t total,
 }
 
 // ── Tapered quadrilateral hand ────────────────────────────────────────────────
+//  cx,cy     — pivot point (float for sub-pixel accuracy)
+//  angleDeg  — angle in degrees, 0=12 o'clock, clockwise
+//  fLen      — length forward from pivot (tip side)
+//  bLen      — length back from pivot (tail/counterweight side)
+//  fW        — half-width at the tip
+//  bW        — half-width at the tail
+//  col       — fill colour
 static void drawHand(TFT_eSprite& spr,
                      float cx, float cy, float angleDeg,
                      float fLen, float bLen, float fW, float bW,
@@ -48,6 +55,12 @@ static void drawHand(TFT_eSprite& spr,
 }
 
 // ── Dauphine / leaf hand ──────────────────────────────────────────────────────
+//  cx,cy     — pivot point
+//  angleDeg  — 0=12 o'clock, clockwise
+//  fLen      — tip length from pivot
+//  bLen      — tail length from pivot
+//  maxW      — maximum half-width (at ~42% of fLen from pivot)
+//  col       — fill colour
 static void drawDauphineHand(TFT_eSprite& spr,
                               float cx, float cy, float angleDeg,
                               float fLen, float bLen, float maxW,
