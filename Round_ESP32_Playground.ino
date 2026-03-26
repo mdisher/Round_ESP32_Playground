@@ -12,7 +12,8 @@
  * ║    1 – Ocean          (deep blue gradient, gold accents)                 ║
  * ║    2 – Moon Analog    (real moon photo + terminator shading)             ║
  * ║    3 – Moon Digital   (same background, 12-hr HH:MM:SS)                 ║
- * ║    4 – Diagnostics    (WiFi, heap, PSRAM, battery, uptime)               ║
+ * ║    4 – Diag: Network  (WiFi, IP, MAC, NTP, GW, DNS, Ch, TX)             ║
+ * ║    5 – Diag: System   (heap, flash, CPU temp, chip, battery, IMU tilt)  ║
  * ╠══════════════════════════════════════════════════════════════════════════╣
  * ║  Required libraries (Arduino Library Manager)                            ║
  * ║    • TFT_eSPI  by Bodmer                                                 ║
@@ -190,16 +191,16 @@ void loop() {
   bool haveTime = getLocalTime(&timeinfo, 0);   // non-blocking
 
   // Clock pages: redraw once per second
-  if (currentPage < PAGE_DIAG && haveTime) {
+  if (currentPage < PAGE_DIAG_NET && haveTime) {
     if (timeinfo.tm_sec != lastSecond) {
       lastSecond  = timeinfo.tm_sec;
       needsRedraw = true;
     }
   }
 
-  // Diagnostics page: refresh every 2 s
+  // Diagnostics pages: refresh every 2 s
   static uint32_t lastDiagMs = 0;
-  if (currentPage == PAGE_DIAG && millis() - lastDiagMs >= 2000) {
+  if (currentPage >= PAGE_DIAG_NET && millis() - lastDiagMs >= 2000) {
     lastDiagMs  = millis();
     needsRedraw = true;
   }
@@ -247,11 +248,12 @@ void loop() {
     int year  = haveTime ? (timeinfo.tm_year + 1900) : 2025;
 
     switch (currentPage) {
-      case PAGE_CLOCK1: drawClockFace1(canvas, h, m, s, day, currentPage); break;
-      case PAGE_CLOCK2: drawClockFace2(canvas, h, m, s, day, currentPage); break;
-      case PAGE_DIAG:   drawDiagnosticsPage(canvas, ntpSynced, currentPage); break;
-      case PAGE_MOON:     drawClockFace3(canvas, h, m, s, day, year, month, currentPage); break;
-      case PAGE_MOON_DIG: drawClockFace3Digital(canvas, h, m, s, day, year, month, currentPage); break;
+      case PAGE_CLOCK1:    drawClockFace1(canvas, h, m, s, day, currentPage); break;
+      case PAGE_CLOCK2:    drawClockFace2(canvas, h, m, s, day, currentPage); break;
+      case PAGE_MOON:      drawClockFace3(canvas, h, m, s, day, year, month, currentPage); break;
+      case PAGE_MOON_DIG:  drawClockFace3Digital(canvas, h, m, s, day, year, month, currentPage); break;
+      case PAGE_DIAG_NET:  drawNetworkPage(canvas, ntpSynced, currentPage); break;
+      case PAGE_DIAG_SYS:  drawSystemPage(canvas, currentPage); break;
     }
 
     canvas.pushSprite(0, 0);

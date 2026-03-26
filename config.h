@@ -73,5 +73,6 @@
 #define PAGE_CLOCK2    1
 #define PAGE_MOON      2   // analog moon clock
 #define PAGE_MOON_DIG  3   // digital moon clock
-#define PAGE_DIAG      4   // diagnostics (must be last — loop uses currentPage < PAGE_DIAG)
-#define NUM_PAGES      5
+#define PAGE_DIAG_NET  4   // diagnostics — network (WiFi, IP, MAC, NTP, Gateway, DNS)
+#define PAGE_DIAG_SYS  5   // diagnostics — system  (heap, flash, CPU temp, IMU tilt)
+#define NUM_PAGES      6
