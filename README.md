@@ -35,6 +35,14 @@ Both diagnostics pages auto-refresh every 2 seconds. All text is laid out using 
 
 ---
 
+## Screenshots
+
+| Moon Digital | Diag: Network | Diag: System |
+|:---:|:---:|:---:|
+| ![Moon Digital clock face](Screens/IMG_3178.jpg) | ![Network diagnostics page](Screens/IMG_3179.jpg) | ![System diagnostics page](Screens/IMG_3180.jpg) |
+
+---
+
 ## Features
 
 - **NTP time sync** — connects to `pool.ntp.org` on boot; daily refresh; Eastern timezone with auto-DST (configurable in `config.h`)
