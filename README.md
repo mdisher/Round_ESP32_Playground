@@ -46,7 +46,7 @@ Both diagnostics pages auto-refresh every 2 seconds. All text is laid out using 
 ## Features
 
 - **NTP time sync** — connects to `pool.ntp.org` on boot; daily refresh; Eastern timezone with auto-DST (configurable in `config.h`)
-- **Real moon phase** — Julian Day calculation gives the correct lunar phase for any date; terminator line rendered with a 24-pixel smoothstep penumbra and earthshine glow on the dark side
+- **Real moon phase** — Standard Meeus Julian Day Number formula (ch. 7) gives the correct lunar phase for any date; terminator line rendered with a 24-pixel smoothstep penumbra and earthshine glow on the dark side
 - **Transparent text** — all text on the moon faces uses a per-pixel transparency technique (no opaque background boxes)
 - **Double-buffered rendering** — 240×240 16-bit sprite in PSRAM; `pushSprite()` for tear-free updates
 - **IMU tilt angle** — QMI8658 accelerometer initialised on first visit to the System page; displays tilt from horizontal in degrees (or "Offline" if not detected)

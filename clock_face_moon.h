@@ -9,12 +9,14 @@
 //  Moon phase  0.0=new  0.25=first-quarter  0.5=full  0.75=last-quarter
 // ─────────────────────────────────────────────────────────────────────────────
 static float calcMoonPhase(int year, int month, int day) {
+  // Standard proleptic Gregorian → Julian Day Number formula (Meeus ch.7)
   int  a  = (14 - month) / 12;
-  int  y  = year - a;
-  int  m  = month + 12*a - 2;
-  long JD = (long)day + (long)(y+4800)*365L + y/4 - y/100 + y/400
-            + (153*m+2)/5 - 32083L;
-  float age = fmodf((float)(JD - 2451549L), 29.53059f);
+  int  y  = year + 4800 - a;            // full year offset for leap corrections
+  int  m  = month + 12*a - 3;           // month index starting from March=0
+  long JD = (long)day + (long)y * 365L + y/4 - y/100 + y/400
+            + (153*m+2)/5 - 32045L;
+  // Reference: JDN 2451550 = noon 6 Jan 2000 (new moon at 18:14 UTC that day)
+  float age = fmodf((float)(JD - 2451550L), 29.53059f);
   if (age < 0) age += 29.53059f;
   return age / 29.53059f;
 }
